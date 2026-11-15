@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATTENDX | Smart Attendance</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span class="logo-icon">A</span>
+            <h2>ATTEND<span>X</span></h2>
+        </div>
+
+        <p class="menu-title">WORKSPACE</p>
+
+        <nav>
+            <a class="nav-link active" onclick="showPage('dashboard',this)">◫ Dashboard</a>
+            <a class="nav-link" onclick="showPage('students',this)">♙ Students</a>
+            <a class="nav-link" onclick="showPage('attendance',this)">▣ Attendance</a>
+            <a class="nav-link" onclick="showPage('qr',this)">⌁ QR Sessions</a>
+            <a class="nav-link" onclick="showPage('reports',this)">▤ Reports</a>
+        </nav>
+
+        <div class="admin-profile">
+            <div class="avatar">AD</div>
+            <div>
+                <strong>Administrator</strong>
+                <small>Campus Workspace</small>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">CAMPUS INTELLIGENCE PLATFORM</p>
+                <h1 id="pageTitle">Dashboard ✦</h1>
+                <p class="subtitle">Welcome back, Administrator.</p>
+            </div>
+
+            <div class="top-actions">
+                <span class="live"><i></i> System Operational</span>
+                <button class="primary-btn" onclick="showPage('qr')">
+                    + New Session
+                </button>
+            </div>
+        </header>
+
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page active">
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <p>Total Students</p>
+                    <h2 id="totalStudents">0</h2>
+                    <span>Registered students</span>
+                </div>
+
+                <div class="stat-card">
+                    <p>Present Today</p>
+                    <h2 id="presentToday">0</h2>
+                    <span class="green">Live attendance</span>
+                </div>
+
+                <div class="stat-card">
+                    <p>Absent Today</p>
+                    <h2 id="absentToday">0</h2>
+                    <span class="red">Not checked in</span>
+                </div>
+
+                <div class="stat-card">
+                    <p>Attendance Rate</p>
+                    <h2 id="attendanceRate">0%</h2>
+                    <span>Today's percentage</span>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Attendance Overview</h3>
+                            <p>Today's attendance distribution</p>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-circle" id="progressCircle">
+                            <div>
+                                <h2 id="circlePercentage">0%</h2>
+                                <small>ATTENDANCE</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="legend">
+                        <span>🟢 Present</span>
+                        <span>🔴 Absent</span>
+                    </div>
+                </div>
+
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Quick Actions</h3>
+                            <p>Manage your classroom</p>
+                        </div>
+                    </div>
+
+                    <button class="action-btn" onclick="showPage('students')">
+                        + Register New Student
+                    </button>
+
+                    <button class="action-btn" onclick="showPage('qr')">
+                        ▦ Generate QR Code
+                    </button>
+
+                    <button class="action-btn" onclick="showPage('attendance')">
+                        View Attendance Records
+                    </button>
+
+                    <button class="action-btn" onclick="showPage('reports')">
+                        Download Reports
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div class="panel table-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Recent Attendance</h3>
+                        <p>Latest student check-ins</p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Roll Number</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recentTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- STUDENTS PAGE -->
+        <section id="students" class="page">
+
+            <div class="panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h3>Register Student</h3>
+                        <p>Add a new student to your database</p>
+                    </div>
+                </div>
+
+                <form id="studentForm">
+
+                    <div class="form-grid">
+
+                        <div>
+                            <label>Student Name</label>
+                            <input type="text" id="studentName"
+                                placeholder="Enter full name" required>
+                        </div>
+
+                        <div>
+                            <label>Roll Number</label>
+                            <input type="text" id="studentRoll"
+                                placeholder="Enter roll number" required>
+                        </div>
+
+                        <div>
+                            <label>Course</label>
+                            <input type="text" id="studentCourse"
+                                placeholder="B.Tech CSE" required>
+                        </div>
+
+                        <div>
+                            <label>Email</label>
+                            <input type="email" id="studentEmail"
+                                placeholder="student@gmail.com">
+                        </div>
+
+                    </div>
+
+                    <button class="primary-btn" type="submit">
+                        + Add Student
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="panel table-panel">
+
+                <div class="panel-heading">
+                    <h3>Student Directory</h3>
+                    <input type="text" id="studentSearch"
+                        placeholder="Search students...">
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Roll Number</th>
+                                <th>Course</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentsTable"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ATTENDANCE PAGE -->
+        <section id="attendance" class="page">
+
+            <div class="panel table-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h3>Attendance Records</h3>
+                        <p>Complete attendance history</p>
+                    </div>
+
+                    <button class="secondary-btn" onclick="exportCSV()">
+                        ↓ Export CSV
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Roll Number</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="attendanceTable"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- QR SESSION PAGE -->
+        <section id="qr" class="page">
+
+            <div class="qr-grid">
+
+                <div class="panel">
+
+                    <h3>Create Attendance Session</h3>
+                    <p class="description">
+                        Generate a QR code for your classroom.
+                    </p>
+
+                    <label>Subject Name</label>
+                    <input type="text" id="sessionName"
+                        placeholder="Data Structures">
+
+                    <label>QR Expiry Time</label>
+                    <select id="duration">
+                        <option value="5">5 Minutes</option>
+                        <option value="10" selected>10 Minutes</option>
+                        <option value="20">20 Minutes</option>
+                        <option value="30">30 Minutes</option>
+                    </select>
+
+                    <button class="primary-btn full-btn"
+                        onclick="generateQR()">
+                        Generate QR Code
+                    </button>
+
+                </div>
+
+
+                <div class="panel qr-panel">
+
+                    <h3>Attendance QR Code</h3>
+
+                    <div id="qrcode">
+                        <p>QR code will appear here</p>
+                    </div>
+
+                    <p id="sessionInfo" class="description">
+                        No active session.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+                <h3>Student QR Scanner</h3>
+
+                <p class="description">
+                    Scan the teacher's active QR code.
+                </p>
+
+                <div id="reader"></div>
+
+                <label>Or enter roll number (demo)</label>
+
+                <input type="text" id="manualRoll"
+                    placeholder="Enter your roll number">
+
+                <button class="primary-btn"
+                    onclick="manualAttendance()">
+                    Mark Attendance
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- REPORTS PAGE -->
+        <section id="reports" class="page">
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <p>Total Students</p>
+                    <h2 id="reportTotal">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <p>Total Check-ins</p>
+                    <h2 id="reportChecks">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <p>Low Attendance</p>
+                    <h2 id="reportLow">0</h2>
+                </div>
+
+            </div>
+
+            <div class="panel table-panel">
+
+                <div class="panel-heading">
+                    <h3>Student Performance</h3>
+
+                    <button class="secondary-btn" onclick="exportCSV()">
+                        Download Report
+                    </button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Roll Number</th>
+                                <th>Present Days</th>
+                                <th>Attendance</th>
+                                <th>Alert</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="reportsTable"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
