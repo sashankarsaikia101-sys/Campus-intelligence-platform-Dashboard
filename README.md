@@ -143,7 +143,7 @@ The following features can be introduced in future versions:
 
 ## 👨‍💻 Developer
 
-**Developed by:** Sashankar Saikia
+**Developed by:** Sashankar Saikia & Pritam Sharma
 
 **Project:** ATTEND X — Smart Campus Attendance System
 
